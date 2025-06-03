@@ -1,9 +1,29 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { LoginActions } from "../redux/slices/login";
+import toast, { Toaster } from "react-hot-toast";
+
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const loginData = useSelector((store) => store.login);
+
+  const handleLogin = () => {
+    if (loginData !== true) {
+      dispatch(LoginActions.updateLoginStatus(true));
+      toast.success("Login Successful");
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    }
+  };
+
   return (
     <div
       style={{ fontFamily: "Inter, sans-serif" }}
       className="h-screen w-screen bg-[#E5E5E5] flex justify-center items-center px-4 lg:px-0"
     >
+      <Toaster position="top-right"></Toaster>
       <div className="bg-white lg:w-1/3 px-4 py-8 space-y-4 shadow-lg rounded-sm">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold">Back to your digital life</h1>
@@ -51,7 +71,10 @@ const Login = () => {
           </div>
         </div>
         <div className="text-center w-full px-8 mt-10">
-          <button className="w-full py-3 text-sm bg-blue-500 text-white rounded-md cursor-pointer">
+          <button
+            className="w-full py-3 text-sm bg-blue-500 text-white rounded-md cursor-pointer"
+            onClick={handleLogin}
+          >
             Log in
           </button>
         </div>
